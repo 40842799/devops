@@ -13,11 +13,11 @@ jobs:
         uses: actions/setup-java@v2
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
 
       # Changed from 'mvn compile' to 'mvn package' to generate the fat JAR
       - name: Package with Maven
-        run: mvn package
+        run: mvn clean package
 
       # Updated to run the executable JAR containing the MongoDB dependencies
       - name: Run Java Application
