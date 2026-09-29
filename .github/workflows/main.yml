@@ -5,6 +5,14 @@ jobs:
   build:
     name: Hello world action
     runs-on: ubuntu-22.04
+
+    # 1. Spin up a temporary MongoDB instance inside the GitHub cloud runner
+    services:
+      mongodb:
+        image: mongo:latest
+        ports:
+          - 27000:27017
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
