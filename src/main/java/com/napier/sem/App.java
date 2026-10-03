@@ -16,7 +16,7 @@ public class App {
 
         // Corrected instantiation approach: use MongoClients.create factory pattern
         // Connection string URI format maps smoothly across your development environments
-        try (MongoClient mongoClient = MongoClients.create("mongodb://localhost:27000")) {
+        try (MongoClient mongoClient = MongoClients.create("mongodb://mongo-dbserver:27017")) {
 
             // Get a database - will create when we use it
             MongoDatabase database = mongoClient.getDatabase("mydb");
