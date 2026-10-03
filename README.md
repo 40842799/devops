@@ -9,4 +9,5 @@ All Workflows
 # DevOps.
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/40842799/seMethods/main.yml)
 
+![workflow](https://github.com/40842799/devops/actions/workflows/main.yml/badge.svg)
 
