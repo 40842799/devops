@@ -23,7 +23,7 @@ jobs:
           docker run -d --name mydb --network seMethods --network-alias mydb -p 27000:27017 mongo:latest
 
       # 2. Package the code into the fat JAR
-      # fat JAR, meaning the resulting JAR is intended to contain the application
+      #  meaning the resulting JAR is intended to contain the application
       # and its required dependencies.
       - name: Package with Maven
         run: mvn clean package
