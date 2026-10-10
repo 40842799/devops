@@ -27,4 +27,7 @@ services:
     # Shared bridge network allowing containers to communicate using hostnames
     networks:
       seMethods:
+
+networks:
+  seMethods:
       driver: bridge
