@@ -35,7 +35,7 @@ jobs:
         run: docker build --no-cache -t devopsimage .
 
       - name: Run docker compose
-        run: docker compose up
+        run: docker compose up --abort-on-container-exit
 
       # 4. Run your application on the custom network
       - name: Run Docker Container
