@@ -1,0 +1,33 @@
+version: '3.8'
+services:
+  # Application Dockerfile is in same folder which is .
+  app:
+    build: .
+    depends_on:
+      - db
+      - mongo-dbserver
+    networks:
+      - seMethods
+
+  # 2. Your MySQL Database (built from your local db folder)
+  db:
+    build: db/.
+    restart: always
+    ports:
+      - "33060:3306"
+    networks:
+      - seMethods
+
+  # 3. Your MongoDB Database (required for the second half of App.java)
+  mongo-dbserver:
+    image: mongo:latest
+    container_name: mongo-dbserver
+    ports:
+      - "27017:27017"
+    # Shared bridge network allowing containers to communicate using hostnames
+    networks:
+      seMethods:
+
+networks:
+  seMethods:
+      driver: bridge
