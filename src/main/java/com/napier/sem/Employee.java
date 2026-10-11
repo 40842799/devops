@@ -45,17 +45,20 @@ public class Employee {
      */
     public String manager;
 
-    public Employee getEmployee(int ID)
+    public Employee getEmployee(Connection con, int ID)
     {
         try
         {
-            String url = System.getenv("DB_URL");
-            String user = System.getenv("DB_USER");
-            String password = System.getenv("DB_PASSWORD");
 
-            Connection connection = DriverManager.getConnection(url, user, password);
+            // String url = System.getenv("DB_URL");
+            // String user = System.getenv("DB_USER");
+            // String password = System.getenv("DB_PASSWORD");
+
+            // Connection connection = DriverManager.getConnection(url, user, password);
+
+
             // Create an SQL statement
-            Statement stmt = connection.createStatement();
+            Statement stmt = con.createStatement();
             // Create string for SQL statement
             String strSelect =
                     "SELECT emp_no, first_name, last_name "
