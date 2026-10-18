@@ -1,19 +1,23 @@
 package com.napier.sem;
 
-// Fixed legacy import to match version 5.1.0 specification
-
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
-
 import java.sql.*;
 
 public class App {
+
+    /**
+     * Connection to MySQL database.
+     */
+     Connection con = null;
+
     public static void main(String[] args) {
+        int i;
         System.out.println("Hello and welcome!");
-        for (int i = 1; i <= 5; i++) {
+        for (i = 1; i <= 5; i++) {
             System.out.println("i = " + i);
         }
 
@@ -25,47 +29,13 @@ public class App {
 
         // Get Employee
         Employee emp = new Employee();
-        emp.getEmployee(255530);
-        emp.displayEmployee(emp);
+        Employee result = emp.getEmployee(a.con,499524);
+        emp.displayEmployee(result);
 
         // Disconnect from database
         a.disconnect();
 
-        // Corrected instantiation approach: use MongoClients.create factory pattern
-        // Connection string URI format maps smoothly across your development environments
-        try (MongoClient mongoClient = MongoClients.create("mongodb://mongo-dbserver:27017")) {
-
-            // Get a database - will create when we use it
-            MongoDatabase database = mongoClient.getDatabase("mydb");
-
-            // Get a collection from the database
-            MongoCollection<Document> collection = database.getCollection("test");
-
-            // Create a document to store
-            Document doc = new Document("name", "Hitesh Thakore")
-                    .append("class", "DevOps")
-                    .append("year", "2026")
-                    .append("result", new Document("CW", 95).append("EX", 85));
-
-            // Add document to collection
-            collection.insertOne(doc);
-
-            // Check document in collection
-            // Document myDoc = collection.find().first();
-            Document myDoc = collection.find(new Document("name", "Hitesh Thakore")).first();
-            if (myDoc != null) {
-                System.out.println(myDoc.toJson());
-            } else {
-                System.out.println("No document found in collection.");
-            }
-        } // The try-with-resources statement automatically closes the client resource cleanly
     }
-
-
-    /**
-     * Connection to MySQL database.
-     */
-    private Connection con = null;
 
     /**
      * Connect to the MySQL database.
@@ -86,7 +56,7 @@ public class App {
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://db:3306/employees?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://localhost:33060/employees", "root", "example");
                 System.out.println("Successfully connected");
                 break;
             } catch (SQLException sqle) {
@@ -111,5 +81,6 @@ public class App {
             }
         }
     }
+
 
 }
