@@ -14,6 +14,29 @@ public class App {
      */
      Connection con = null;
 
+    public static void main(String[] args) {
+        int i;
+        System.out.println("Hello and welcome!");
+        for (i = 1; i <= 5; i++) {
+            System.out.println("i = " + i);
+        }
+
+        // Create new Application
+        App a = new App();
+
+        // Connect to database
+        a.connect();
+
+        // Get Employee
+        Employee emp = new Employee();
+        Employee result = emp.getEmployee(a.con,499524);
+        emp.displayEmployee(result);
+
+        // Disconnect from database
+        a.disconnect();
+
+    }
+
     /**
      * Connect to the MySQL database.
      */
@@ -59,26 +82,5 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
-        int i;
-        System.out.println("Hello and welcome!");
-        for (i = 1; i <= 5; i++) {
-            System.out.println("i = " + i);
-        }
 
-        // Create new Application
-        App a = new App();
-
-        // Connect to database
-        a.connect();
-
-        // Get Employee
-        Employee emp = new Employee();
-        Employee result = emp.getEmployee(a.con,499524);
-        emp.displayEmployee(result);
-
-        // Disconnect from database
-        a.disconnect();
-
-    }
 }
