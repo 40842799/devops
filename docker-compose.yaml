@@ -5,7 +5,9 @@ services:
     build: .
     depends_on:
       - db
-      - mongo-dbserver
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
     networks:
       - seMethods
 
@@ -16,18 +18,13 @@ services:
     restart: always
     ports:
       - "33060:3306"
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pexample" ]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - seMethods
-
-  # 3. Your MongoDB Database (required for the second half of App.java)
-  mongo-dbserver:
-    image: mongo:latest
-    container_name: mongo-dbserver
-    ports:
-      - "27017:27017"
-    # Shared bridge network allowing containers to communicate using hostnames
-    networks:
-      seMethods:
 
 networks:
   seMethods:
