@@ -65,7 +65,7 @@ public class App {
                 // Connect to database
                 // con = DriverManager.getConnection("jdbc:mysql://localhost:33060/employees", "root", "example");
                 con = DriverManager.getConnection("jdbc:mysql://" + conString
-                        + "/world?allowPublicKeyRetrieval=true&useSSL"
+                        + "/employees?allowPublicKeyRetrieval=true&useSSL"
                         + "=false", "root", "example");
                 System.out.println("Successfully connected");
                 break;
