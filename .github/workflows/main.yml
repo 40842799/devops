@@ -39,8 +39,7 @@ jobs:
 
       - name: Copy output from app container
         run: |
-          # get container id for the app
-               CID=$(docker compose ps -q app)
+          CID=$(docker compose ps -a -q app)
                if [ -n "$CID" ]; then
                docker cp "${CID}:/tmp/output" ./output || echo "No /tmp/output in container"
                else
