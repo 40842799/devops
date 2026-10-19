@@ -5,6 +5,7 @@ import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.MongoCollection;
 import org.bson.Document;
+
 import java.sql.*;
 
 public class App {
@@ -12,7 +13,7 @@ public class App {
     /**
      * Connection to MySQL database.
      */
-     Connection con = null;
+    Connection con = null;
 
     public static void main(String[] args) {
         int i;
@@ -25,11 +26,17 @@ public class App {
         App a = new App();
 
         // Connect to database
-        a.connect();
+        if (args.length < 1) {
+            //local
+            a.connect("localhost:33060", 0);
+        } else {
+            //docker parameters passed from Dockerfile
+            a.connect(args[0], Integer.parseInt(args[1]));
+        }
 
         // Get Employee
         Employee emp = new Employee();
-        Employee result = emp.getEmployee(a.con,499524);
+        Employee result = emp.getEmployee(a.con, 499524);
         emp.displayEmployee(result);
 
         // Disconnect from database
@@ -40,7 +47,7 @@ public class App {
     /**
      * Connect to the MySQL database.
      */
-    public void connect() {
+    public void connect(String conString, int delay) {
         try {
             // Load Database driver
             Class.forName("com.mysql.cj.jdbc.Driver");
@@ -56,7 +63,10 @@ public class App {
                 // Wait a bit for db to start
                 Thread.sleep(30000);
                 // Connect to database
-                con = DriverManager.getConnection("jdbc:mysql://localhost:33060/employees", "root", "example");
+                // con = DriverManager.getConnection("jdbc:mysql://localhost:33060/employees", "root", "example");
+                con = DriverManager.getConnection("jdbc:mysql://" + conString
+                        + "/world?allowPublicKeyRetrieval=true&useSSL"
+                        + "=false", "root", "example");
                 System.out.println("Successfully connected");
                 break;
             } catch (SQLException sqle) {

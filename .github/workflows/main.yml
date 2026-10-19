@@ -22,32 +22,35 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # 1. Create the network and start MongoDB container with the correct alias
-      - name: Setup Docker Network and MongoDB
-        run: |
-          docker network create seMethods
-          docker run -d --name mydb --network seMethods --network-alias mydb -p 27000:27017 mongo:latest
-
       # 2. Package the code into the fat JAR
       #  meaning the resulting JAR is intended to contain the application
       # and its required dependencies.
       - name: Package with Maven
         run: mvn clean package
 
-      # 3. Build your application Docker image
-      - name: Build Docker Image
-        run: docker build --no-cache -t devopsimage .
-
       - name: Run docker compose
         run: docker compose up --abort-on-container-exit
-
-      # 4. Run your application on the custom network
-      - name: Run Docker Container
-        run: docker run --name devopscontainer --network seMethods -d devopsimage
 
       # 5. Wait a brief moment and check logs to verify successful database insertion
       - name: View Container Logs
         run: |
           sleep 5
           docker logs devopscontainer
+
+      # copy from docker container back to our execution environment
+      - name: Copy Output
+        run: docker container cp devopscontainer:./tmp/output ./
+      # check files on actions environment
+      # run: | allows multiple commands
+      - name: List dirs
+        run: |
+          pwd
+          ls
+      #copy output folder to new branch called output
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./output
+          publish_branch: output
 
