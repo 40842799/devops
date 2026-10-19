@@ -23,7 +23,7 @@ jobs:
           distribution: 'temurin'
 
       # 2. Package the code into the fat JAR
-      #  meaning the resulting JAR is intended to contain the application
+      # meaning the resulting JAR is intended to contain the application
       # and its required dependencies.
       - name: Package with Maven
         run: mvn clean package
@@ -32,20 +32,22 @@ jobs:
         run: docker compose up --abort-on-container-exit
 
       # 5. Wait a brief moment and check logs to verify successful database insertion
-      - name: View Container Logs
+      - name: View container logs
         run: |
           sleep 5
-          docker logs devopscontainer
+          docker compose logs --tail=200 app db
 
-      # copy from docker container back to our execution environment
-      - name: Copy Output
-        run: docker container cp devopscontainer:./tmp/output ./
-      # check files on actions environment
-      # run: | allows multiple commands
-      - name: List dirs
+      - name: Copy output from app container
         run: |
-          pwd
-          ls
+          # get container id for the app
+               CID=$(docker compose ps -q app)
+               if [ -n "$CID" ]; then
+               docker cp "${CID}:/tmp/output" ./output || echo "No /tmp/output in container"
+               else
+               echo "app container not found"
+               exit 1
+               fi
+
       #copy output folder to new branch called output
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

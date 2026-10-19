@@ -1,11 +1,5 @@
 package com.napier.sem;
 
-import com.mongodb.client.MongoClient;
-import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoDatabase;
-import com.mongodb.client.MongoCollection;
-import org.bson.Document;
-
 import java.sql.*;
 
 public class App {
@@ -26,11 +20,14 @@ public class App {
         App a = new App();
 
         // Connect to database
+        // Prefer environment variables for DB in Docker; fallback to db:3306
+        String dbHost = System.getenv().getOrDefault("DB_HOST", "db");
+        String dbPort = System.getenv().getOrDefault("DB_PORT", "3306");
+
         if (args.length < 1) {
-            //local
-            a.connect("localhost:33060", 0);
+            // When running in docker-compose, use service hostname and port
+            a.connect(dbHost + ":" + dbPort, 0);
         } else {
-            //docker parameters passed from Dockerfile
             a.connect(args[0], Integer.parseInt(args[1]));
         }
 
@@ -58,24 +55,22 @@ public class App {
 
         int retries = 10;
         for (int i = 0; i < retries; ++i) {
-            System.out.println("Connecting to database...");
+            System.out.println("Connecting to database (attempt " + i + ")...");
             try {
-                // Wait a bit for db to start
-                Thread.sleep(30000);
-                // Connect to database
-                // con = DriverManager.getConnection("jdbc:mysql://localhost:33060/employees", "root", "example");
+                // Wait a little for db to start
+                Thread.sleep(5000);
                 con = DriverManager.getConnection("jdbc:mysql://" + conString
-                        + "/employees?allowPublicKeyRetrieval=true&useSSL"
-                        + "=false", "root", "example");
+                        + "/employees?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
                 break;
             } catch (SQLException sqle) {
-                System.out.println("Failed to connect to database attempt " + Integer.toString(i));
-                System.out.println(sqle.getMessage());
+                System.out.println("Failed to connect to database attempt " + i);
+                System.out.println("SQLState: " + sqle.getSQLState() + " Message: " + sqle.getMessage());
             } catch (InterruptedException ie) {
-                System.out.println("Thread interrupted? Should not happen.");
+                System.out.println("Thread interrupted");
             }
         }
+
     }
 
     /**
