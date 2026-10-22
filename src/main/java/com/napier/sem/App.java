@@ -32,9 +32,14 @@ public class App {
         }
 
         // Get Employee
-        Employee emp = new Employee();
-        Employee result = emp.getEmployee(a.con, 499524);
-        emp.displayEmployee(result);
+        Employee empInstance = new Employee();
+
+        Employee result = empInstance.getEmployee(a.con, 499524);
+        if (result != null) {
+            empInstance.displayEmployee(result);
+        } else {
+            System.out.println("Employee not found.");
+        }
 
         // Disconnect from database
         a.disconnect();
