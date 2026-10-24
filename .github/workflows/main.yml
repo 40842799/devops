@@ -28,8 +28,13 @@ jobs:
       - name: Package with Maven
         run: mvn clean package
 
-      - name: Run docker compose
-        run: docker compose up --abort-on-container-exit
+      - name: Unit Tests
+        run: mvn -Dtest=com.napier.devops.AppTest test
+
+      - name: Package and Run docker compose
+        run: |
+          mvn package -DskipTests
+          docker compose up --abort-on-container-exit
 
       # 5. Wait a brief moment and check logs to verify successful database insertion
       - name: View container logs
