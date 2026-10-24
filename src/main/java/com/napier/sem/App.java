@@ -1,6 +1,8 @@
 package com.napier.sem;
 
 import java.sql.*;
+import java.util.AbstractList;
+import java.util.ArrayList;
 
 public class App {
 
@@ -32,7 +34,7 @@ public class App {
         }
 
         // Get Employee
-        Employee empInstance = new Employee();
+        com.napier.sem.Employee empInstance = new com.napier.sem.Employee();
 
         Employee result = empInstance.getEmployee(a.con, 499524);
         if (result != null) {
@@ -40,6 +42,12 @@ public class App {
         } else {
             System.out.println("Employee not found.");
         }
+
+        // Extract employee salary information
+        ArrayList<com.napier.sem.Employee> employees = empInstance.getAllSalaries(a.con);
+
+        // Test the size of the returned data - should be 240124
+        System.out.println(employees.size());
 
         // Disconnect from database
         a.disconnect();

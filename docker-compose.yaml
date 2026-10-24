@@ -4,10 +4,8 @@ services:
   app:
     build: .
     depends_on:
-      - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 3306
+      db:
+        condition: service_healthy
     networks:
       - seMethods
 
@@ -19,10 +17,10 @@ services:
     ports:
       - "33060:3306"
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pexample" ]
-      interval: 10s
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 5s
       retries: 10
+      interval: 3s
     networks:
       - seMethods
 
