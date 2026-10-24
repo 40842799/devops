@@ -30,7 +30,15 @@ public class App {
             // When running in docker-compose, use service hostname and port
             a.connect(dbHost + ":" + dbPort, 0);
         } else {
-            a.connect(args[0], Integer.parseInt(args[1]));
+           // a.connect(args[0], Integer.parseInt(args[1]));
+           // FIX: Combine host and port into a single string argument
+            a.connect(args[0] + ":" + args[1], 0);
+        }
+
+        // Connection Safe Gaurd
+        if (a.con == null) {
+            System.out.println("Critical Error: Database connection could not be established. Exiting application.");
+            System.exit(-1);
         }
 
         // Get Employee
@@ -48,6 +56,8 @@ public class App {
 
         // Test the size of the returned data - should be 240124
         System.out.println(employees.size());
+
+        empInstance.printSalaries(employees);
 
         // Disconnect from database
         a.disconnect();
