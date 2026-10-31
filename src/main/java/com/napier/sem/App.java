@@ -9,7 +9,7 @@ public class App {
     /**
      * Connection to MySQL database.
      */
-    Connection con = null;
+    public Connection con = null;
 
     public static void main(String[] args) {
         int i;
@@ -23,16 +23,15 @@ public class App {
 
         // Connect to database
         // Prefer environment variables for DB in Docker; fallback to db:3306
-        String dbHost = System.getenv().getOrDefault("DB_HOST", "db");
-        String dbPort = System.getenv().getOrDefault("DB_PORT", "3306");
+        String dbHost = System.getenv().getOrDefault("DB_HOST", "localhost");
+        String dbPort = System.getenv().getOrDefault("DB_PORT", "33060");
 
         if (args.length < 1) {
             // When running in docker-compose, use service hostname and port
             a.connect(dbHost + ":" + dbPort, 0);
         } else {
            // a.connect(args[0], Integer.parseInt(args[1]));
-           // FIX: Combine host and port into a single string argument
-            a.connect(args[0] + ":" + args[1], 0);
+            a.connect(args[0] + ":" + args[1], 30000);
         }
 
         // Connection Safe Gaurd
@@ -109,6 +108,5 @@ public class App {
             }
         }
     }
-
 
 }
