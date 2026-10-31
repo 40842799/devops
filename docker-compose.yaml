@@ -6,6 +6,10 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    # Add this block to fix the networking path
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
     networks:
       - seMethods
 

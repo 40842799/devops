@@ -62,5 +62,8 @@ jobs:
       - name: Package with Maven
         run: mvn clean package -DskipTests
       - name: Package and Run docker compose
-        run: |
+        env:
+          export DB_HOST=db
+          export DB_PORT=3306
+        run: | 
           docker compose up --abort-on-container-exit
