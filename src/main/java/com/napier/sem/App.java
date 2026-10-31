@@ -75,12 +75,12 @@ public class App {
             System.exit(-1);
         }
 
-        int retries = 50;
+        int retries = 20;
         for (int i = 0; i < retries; ++i) {
             System.out.println("Connecting to database (attempt " + i + ")...");
             try {
                 // Wait a little for db to start
-                Thread.sleep(50000);
+                Thread.sleep(10000);
                 con = DriverManager.getConnection("jdbc:mysql://" + conString
                         + "/employees?allowPublicKeyRetrieval=true&useSSL=false", "root", "example");
                 System.out.println("Successfully connected");
