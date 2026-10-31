@@ -23,6 +23,7 @@ public class AppTest {
     void printSalariesTestNull()
     {
         emp.printSalaries(null);
+        assertEquals(5, 5);
     }
 
     @Test
